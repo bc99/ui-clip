@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<link type="text/css" rel="stylesheet" href="src/themes/ui-lightness/jquery-ui-1.8.13.lightness.css">
+<script type="text/javascript" src="src/jquery-1.6.1.js"></script>
+<script type="text/javascript" src="src/jquery-ui-1.8.13.js"></script>
+<script type="text/javascript" src="src/jquery-ui-clip.js"></script>
+<style>
+	.wrapper{ margin: 10px; padding: 10px; border: 1px solid black; }
+</style>
+</head>
+<body>
+
+<div class="wrapper" id="running-cat">
+	<p>Linksklick auf das Bild, um einen Frame vorwärts zu springen.</p>
+	<p>Rechtsklick auf das Bild, um einen Frame zurück zu springen.</p>
+</div>
+
+<div class="wrapper" id="walking">
+	<p>Animation einer laufenden Figur.</p>
+</div>
+
+<script type="text/javascript">
+
+$(function(){
+
+/**
+ * Im Prinzip kann das clip-Widget auf jedes HTML-Element angewendet
+ * werden. Neben Bilder wären auch canvas-Elemente oder sonstige DOM-
+ * Elemente möglich.
+ */
+
+	// Lade ein Bild per JavaScript
+	$.Image("cat.jpg", /** onload */ function(){
+		// Wenn das Bild geladen ist, wird es in das Container-Div verschoben.
+		$(this).prependTo('#running-cat')
+		// Kleiner Hack, um das erste Element zu positionieren.
+		.clip('next')
+		// linksklick -> next
+		.bind('click',function(event){
+			$(this).clip('next');
+		})
+		// rechtsklick -> prev
+		.bind('contextmenu', function(event){
+			event.preventDefault();
+			$(this).clip('prev');
+		});
+	})
+	// Setze Gesamtgröße des Bildes und die Größe der Einzelframes
+	.clip({
+		width: 2830,
+		height: 1668,
+		frameWidth: 2830/5,
+		frameHeight: 1668/4
+	});
+	
+	$.Image("8872151-3d-walking-cycle-12-frames-character-animation.jpg", /** onload */ function(){
+		// Wenn das Bild geladen ist, wird es in das Container-Div verschoben.
+		$(this).appendTo('#walking')
+		// Starte die Animation
+		// Wenn der erste Parameter nach "animate" TRUE ist, wird eine Endlos-Animationsschleife gestartet
+		// Wenn der Wert FALSE gesetzt ist, wird die Animation nur einmal durchgeführt und stoppt dann.
+		.clip('animate', true);
+	})
+	// Setze Gesamtgröße des Bildes und die Größe der Einzelframes
+	.clip({
+		width: 150,
+		height: 168,
+		frameWidth: 150/4,
+		frameHeight: 168/3,
+		defaultDuration: 120
+	});
+});
+
+</script>
+</body>
+</html>
